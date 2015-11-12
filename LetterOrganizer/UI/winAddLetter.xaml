@@ -1,0 +1,86 @@
+﻿<Window x:Class="LetterOrganizer.winAddLetter"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="افزودن و ویرایش نامه ها" Height="300" Width="917"
+        xmlns:persianCalender="clr-namespace:Arash.PersianDateControls;assembly=PersianDateControls"
+        xmlns:input="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
+        Loaded="Window_Loaded" Closing="Window_Closing" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid FlowDirection="RightToLeft">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="5" Grid.Row="0">
+            <GroupBox Header="نوع نامه:" Margin="5">
+                <StackPanel>
+                    <RadioButton Name="rbResive" Content="دریافتی" Margin="3" IsChecked="True"/>
+                    <RadioButton Name="rbSend" Content="ارسالی" Margin="3"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="مشخصات نامه:" Margin="6,5">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical" Margin="5,0">
+                        <Label Content="شماره نامه:"/>
+                        <input:AutoCompleteBox Name="txtLNumber"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="5,0">
+                        <Label Content="عنوان نامه:"/>
+                        <input:AutoCompleteBox Name="txtLTitle"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="5,0">
+                        <Label Content="صاحب نامه:"/>
+                        <input:AutoCompleteBox Name="txtLOwner" IsTextCompletionEnabled="True"  ItemsSource="{Binding}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="5,0">
+                        <Label Content="شماره نامه رسیده:"/>
+                        <input:AutoCompleteBox Name="txtLResiveNumber" IsEnabled="{Binding ElementName=rbResive ,Path=IsChecked}"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="پیوست:" Margin="6,5">
+                <StackPanel>
+                    <RadioButton Name="rbHasNotAttachment" Content="ندارد" Margin="3" IsChecked="True"/>
+                    <RadioButton Name="rbHasAttachment" Content="دارد" Margin="3"/>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="تاریخ:" Margin="16,5">
+                <persianCalender:PersianDatePicker Name="datePicker"/>
+            </GroupBox>
+            <GroupBox Header="ذخیره:" Margin="8,5">
+                <StackPanel Orientation="Horizontal">
+                    <Button Name="btnSave" Content="ذخیره" Width="83" Margin="5,10" Click="btnSave_Click" />
+                    <Button Name="btnCancel" Content="لغو" Width="83" Margin="5,10" Click="btnCancel_Click"/>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Header="توضیحات:" Grid.Column="0" Margin="10,2">
+                <TextBox Name="txtLComments" Margin="5"/>
+            </GroupBox>
+            <GroupBox Header="زوکن:" Grid.Column="1" Margin="10,2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="عنوان:"/>
+                        <input:AutoCompleteBox Name="txtRingBinder" IsTextCompletionEnabled="True" Margin="5,0"/>
+                    </StackPanel>
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="1*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="توضیحات:" Margin="5,0" Grid.Row="0"/>
+                        <TextBox Name="txtRingBinderComment" Margin="5,0" Grid.Row="1" Text="{Binding ElementName=txtRingBinder,Path=SelectedItem.Comments}"/>
+                    </Grid>
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</Window>
