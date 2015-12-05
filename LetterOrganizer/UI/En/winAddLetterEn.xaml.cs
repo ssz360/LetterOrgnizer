@@ -17,9 +17,9 @@ namespace LetterOrganizer
     /// <summary>
     /// Interaction logic for winAddLetter.xaml
     /// </summary>
-    public partial class winAddLetter : Window
+    public partial class winAddLetterEn : Window
     {
-        public winAddLetter()
+        public winAddLetterEn()
         {
             InitializeComponent();
         }
@@ -54,7 +54,7 @@ namespace LetterOrganizer
                 rbResive.IsChecked = ToEdit.ReceivedLetterId != 0;
                 rbSend.IsChecked = ToEdit.ReceivedLetterId == 0;
 
-                datePicker.SelectedDate = new Arash.PersianDate(ToEdit.Date);
+                datePicker.SelectedDate = ToEdit.Date;
             }
         }
 
@@ -115,7 +115,7 @@ namespace LetterOrganizer
                 ReceivedLetterId = resiveID,
                 RingerBinder = ringBinder,
                 Title = title,
-                Date = datePicker.SelectedDate.ToDateTime(),
+                Date = datePicker.SelectedDate ?? DateTime.Now,
             };
 
             if (newrb)

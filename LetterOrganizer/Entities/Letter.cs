@@ -61,7 +61,7 @@
         /// <value>
         /// The letter's ringer binder.
         /// </value>
-        [Required(ErrorMessage = "نامه باید دارای زوکن باشد.")]
+        [Required(ErrorMessage = "نامه باید دارای زونکن باشد.")]
         public RingBinder RingerBinder
         {
             get

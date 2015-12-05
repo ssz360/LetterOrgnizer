@@ -50,7 +50,7 @@
         /// <value>
         /// The title.
         /// </value>
-        [Required(ErrorMessage = "باید عنوان زوکن مشخص باشد.")]
+        [Required(ErrorMessage = "باید عنوان زونکن مشخص باشد.")]
         public string Title
         {
             get

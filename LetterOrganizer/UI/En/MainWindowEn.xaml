@@ -1,0 +1,204 @@
+﻿<Window x:Class="LetterOrganizer.MainWindowEn"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:persianCalender="clr-namespace:Arash.PersianDateControls;assembly=PersianDateControls"
+        xmlns:input="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
+        xmlns:local="clr-namespace:LetterOrganizer"
+        Title="Management" Height="650" Width="940"
+        Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Window.Resources>        
+        <Storyboard x:Key="StoryboardRotate">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)" Storyboard.TargetName="loading" RepeatBehavior="Forever">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="90">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="180">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource StoryboardRotate}"/>
+        </EventTrigger>
+    </Window.Triggers>
+    
+    <Grid FlowDirection="LeftToRight">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Header="Searching:" Margin="5" Grid.Column="0">
+                <StackPanel Orientation="Horizontal" Margin="5,0" Grid.Row="0">
+                    <GroupBox Margin="5">
+                        <GroupBox.Header>
+                            <CheckBox Name="chType" Content="Type:" Checked="CheckBox_CheckedChange" Unchecked="CheckBox_CheckedChange"/>
+                        </GroupBox.Header>
+                        <StackPanel>
+                            <RadioButton Name="rbResive" Content="Send" Margin="3" Checked="RadioButton_Checked" IsChecked="True"/>
+                            <RadioButton Name="rbSend" Content="Receive" Margin="3" Checked="RadioButton_Checked"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Margin="6,5">
+                        <GroupBox.Header>
+                            <CheckBox Name="chDetails" Content="Details:" Checked="CheckBox_CheckedChange" Unchecked="CheckBox_CheckedChange"/>
+                        </GroupBox.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical" Margin="5,0">
+                                <Label Content="Number:"/>
+                                <input:AutoCompleteBox Name="txtLNumber" KeyUp="txtLNumber_KeyUp"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="5,0">
+                                <Label Content="Title:"/>
+                                <input:AutoCompleteBox Name="txtLTitle" KeyUp="txtLNumber_KeyUp"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="5,0">
+                                <Label Content="Owner:"/>
+                                <input:AutoCompleteBox Name="txtLOwner" IsTextCompletionEnabled="True"  ItemsSource="{Binding Path=LetterOwners}" KeyUp="txtLNumber_KeyUp"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="5,0">
+                                <Label Content="Receive Number:"/>
+                                <input:AutoCompleteBox Name="txtLResiveNumber" KeyUp="txtLNumber_KeyUp"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Margin="6,5">
+                        <GroupBox.Header>
+                            <CheckBox Name="chAttachment" Content="Attachment:" Checked="CheckBox_CheckedChange" Unchecked="CheckBox_CheckedChange"/>
+                        </GroupBox.Header>
+                        <StackPanel>
+                            <RadioButton Name="rbHasAttachment" Content="Has" Margin="3" Checked="RadioButton_Checked"/>
+                            <RadioButton Name="rbDoesNotHaveAttachment" Content="Doesn't have" Margin="3" Checked="RadioButton_Checked" IsChecked="True"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Margin="5,5">
+                        <GroupBox.Header>
+                            <CheckBox Name="chDate" Content="Date:" Checked="CheckBox_CheckedChange" Unchecked="CheckBox_CheckedChange"/>
+                        </GroupBox.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical" Margin="5,0">
+                                <Label Content="From:"/>
+                                <DatePicker Name="dpFrom" SelectedDateChanged="dpFrom_SelectedDateChanged"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="5,0">
+                                <Label Content="To:"/>
+                                <DatePicker Name="dpTo" SelectedDateChanged="dpFrom_SelectedDateChanged"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </GroupBox>
+            <Border Grid.Column="1" BorderThickness="1" CornerRadius="5" BorderBrush="#F9B5B7B8"  Margin="5,15,5,5">
+                <Button Content="Add Letter" Name="btnAdd" Click="btnAdd_Click"
+                    Background="#68CFD0D1" BorderThickness="0"/>
+            </Border>
+        </Grid>
+        <GroupBox Header="Letters:" Grid.Row="1" Margin="5">
+            <ListView Name="lsvLetters" Margin="5" ItemsSource="{Binding Letters}" HorizontalContentAlignment="Stretch">
+                <ListView.Resources>
+                    <Style TargetType="ListViewItem">
+                        <Style.Triggers>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter Property="IsSelected" Value="True"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.Resources>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Number" Width="100">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid Width="50">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding LetterID}" TextAlignment="Center" Grid.Column="1"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Title" Width="340" DisplayMemberBinding="{Binding Title}"/>
+                        <GridViewColumn Header="Owner" Width="150" DisplayMemberBinding="{Binding Owner}"/>
+                        <GridViewColumn Header="Attachment" Width="80">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Name="txtAttachment">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Attachment}" Value="True">
+                                                        <Setter Property="Text" Value="Has"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Attachment}" Value="False">
+                                                        <Setter Property="Text" Value="Doesn't hav"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Date" Width="150" DisplayMemberBinding="{Binding Date,Converter={StaticResource dateConverter}}"/>
+                        <GridViewColumn Header="Edit" Width="60">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Margin="0,0,2,0" Background="Transparent" BorderThickness="0" Name="btnEdit" Click="btnEdit_Click">
+                                            <Image Source="pack://application:,,,/Resources/edit.png" Width="16" Height="16"/>
+                                        </Button>
+                                        <Button Background="Transparent" BorderThickness="0" Name="btnDelete" Click="btnDelete_Click">
+                                            <Image Source="pack://application:,,,/Resources/delete.png" Width="16" Height="16"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </GroupBox>
+        <Viewbox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" x:Name="loading" RenderTransformOrigin="0.5,0.5"
+    		Grid.ColumnSpan="4" Grid.RowSpan="4" Grid.Row="1" Visibility="Hidden"
+               Margin="150" >
+            <Viewbox.Effect>
+                <DropShadowEffect Direction="0" ShadowDepth="0" BlurRadius="50" Opacity="0.8"/>
+            </Viewbox.Effect>
+            <Viewbox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Viewbox.RenderTransform>
+            <Grid>
+                <Grid x:Name="backgroundGrid" Width="48" Height="48" Visibility="Visible">
+                    <Ellipse Fill="#FFD5D2D2" x:Name="Fill" Visibility="Visible" />
+                </Grid>
+                <Path Data="M0,12.678L3.1523036,12.678C3.7317073,13.736513 4.4921383,14.765224 5.432188,15.705335 8.7472801,19.021774 14.523334,20.152086 17.479,18.694969 15.602622,20.332988 13.156149,21.333 10.47118,21.333 5.2682499,21.333 0.94267713,17.606457 0,12.678z M10.471414,0C15.748655,0,20.119625,3.8360395,20.974998,8.8700008L17.906191,8.8700008C17.313709,7.7358603 16.513132,6.6303701 15.510363,5.6276622 11.658877,1.7760324 5.353106,0.86332798 2.5459999,3.5456543 4.4989514,1.373745 7.3205175,0 10.471414,0z" Stretch="Uniform" Fill="#FF313030" Width="26" Height="26" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5">
+                    <Path.RenderTransform>
+                        <TransformGroup>
+                            <RotateTransform Angle="0" />
+                            <ScaleTransform ScaleX="1" ScaleY="1" />
+                        </TransformGroup>
+                    </Path.RenderTransform>
+                </Path>
+            </Grid>
+        </Viewbox>
+    </Grid>
+</Window>
